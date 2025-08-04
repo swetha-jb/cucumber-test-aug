@@ -1,8 +1,9 @@
 package stepDefinitions;
 
+import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import io.cucumber.java.en.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 import pages.FlipkartLoginPage;
 
 import java.time.Duration;
@@ -14,7 +15,14 @@ public class FlipkartSteps {
 
     @Given("user is on Flipkart homepage")
     public void user_is_on_flipkart_homepage() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--user-data-dir=/tmp/selenium-profile-" + System.currentTimeMillis());
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless=new");  // optional
+        options.addArguments("--disable-gpu");
+
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://www.flipkart.com/");
         loginPage = new FlipkartLoginPage(driver);
@@ -32,3 +40,4 @@ public class FlipkartSteps {
         driver.quit();
     }
 }
+
